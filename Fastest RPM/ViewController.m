@@ -9,7 +9,10 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+
+@property (strong, nonatomic) NSNumber *topSpeed;
 @property (weak, nonatomic) IBOutlet UIImageView *needle;
+@property (weak, nonatomic) IBOutlet UILabel *topSpeedLabel;
 
 - (void)resetNeedle;
 @end
@@ -18,8 +21,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self resetNeedle];
+    self.topSpeed = [[NSNumber alloc] initWithDouble:0];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,6 +41,12 @@
         CGPoint vel = [sender velocityInView:self.view];
         double fingerSpeed = (vel.x * vel.x) + (vel.y * vel.y);
         NSNumber *speed = [NSNumber numberWithDouble:sqrt(fingerSpeed)];
+
+        if ([speed intValue] > [self.topSpeed intValue]) {
+            self.topSpeed = speed;
+        }
+        
+        self.topSpeedLabel.text = [NSString stringWithFormat:@"Fastest Speed: %@", self.topSpeed];
     
         //max speed is 10 000
     
